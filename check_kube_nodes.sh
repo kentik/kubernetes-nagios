@@ -41,11 +41,12 @@ done
 
 # Comment out if you have SSL enabled on your K8 API
 SSL="--insecure"
+REQUEST_TIMEOUT="60s"
 EXITCODE=0
 
 if [ -z $TARGET ]; then
 	# kubectl mode
-	K8STATUS="$(kubectl $KUBE_CONFIG get nodes -o json)"
+	K8STATUS="$(kubectl $KUBE_CONFIG get nodes --request-timeout $REQUEST_TIMEOUT -o json)"
 	if [ $(echo "$K8STATUS" | wc -l) -le 30 ]; then echo "CRITICAL - unable to connect to Kubernetes via kubectl!"; exit 3; fi
 else
 	# k8 API mode

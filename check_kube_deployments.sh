@@ -47,6 +47,7 @@ fi
 
 # Comment out if you have SSL enabled on your K8 API
 SSL="--insecure"
+REQUEST_TIMEOUT="60s"
 EXITCODE=0
 
 if [[ -z $TARGET ]]; then
@@ -86,9 +87,9 @@ for NAMESPACE in ${NAMESPACES[*]}; do
 	if [[ -z $TARGET ]]; then
 		# kubectl mode
 		if [[ "$ALL_NAMESPACE_OPTION" == "true" ]]; then
-			DEPLOYMENTS_STATUS=$(kubectl $KUBE_CONFIG get deployments --all-namespaces -o json)
+			DEPLOYMENTS_STATUS=$(kubectl $KUBE_CONFIG get deployments --all-namespaces --request-timeout $REQUEST_TIMEOUT -o json )
 		else
-			DEPLOYMENTS_STATUS=$(kubectl $KUBE_CONFIG get deployments --namespace $NAMESPACE -o json)
+			DEPLOYMENTS_STATUS=$(kubectl $KUBE_CONFIG get deployments --namespace $NAMESPACE --request-timeout $REQUEST_TIMEOUT -o json)
 		fi
 	else
 		# api mode

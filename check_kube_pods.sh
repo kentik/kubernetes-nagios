@@ -39,6 +39,7 @@ exit 2
 
 # Comment out if you have SSL enabled on your K8 API
 SSL="--insecure"
+REQUEST_TIMEOUT="60s"
 EXITCODE=0
 # Default thresholds for container restarts
 WARN_THRESHOLD=10
@@ -101,9 +102,9 @@ for NAMESPACE in ${NAMESPACES[*]}; do
 	if [[ -z $TARGET ]]; then
 		# kubectl mode
 		if [[ "$ALL_NAMESPACE_OPTION" == "true" ]]; then
-			PODS_STATUS=$(kubectl $KUBE_CONFIG get pods --all-namespaces -o json)
+			PODS_STATUS=$(kubectl $KUBE_CONFIG get pods --all-namespaces --request-timeout $REQUEST_TIMEOUT -o json)
 		else
-			PODS_STATUS=$(kubectl $KUBE_CONFIG get pods --namespace $NAMESPACE -o json)
+			PODS_STATUS=$(kubectl $KUBE_CONFIG get pods --namespace $NAMESPACE --request-timeout $REQUEST_TIMEOUT -o json)
 		fi
 		
 	else
